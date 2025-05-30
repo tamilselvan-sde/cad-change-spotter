@@ -41,17 +41,14 @@ if img1_file and img2_file:
         result_img = arr2[:, :, :3].copy()
 
         # Apply green shadow where old part missing
-        # Blend green with existing pixels for subtle shadow
         green = np.array([0, 255, 0], dtype=np.uint8)
-        # We'll blend 50% green with existing color
         alpha_blend = 0.5
         result_img[missing_mask] = (
-            (result_img[missing_mask].astype(float) * (1 - alpha_blend)) + 
+            (result_img[missing_mask].astype(float) * (1 - alpha_blend)) +
             (green.astype(float) * alpha_blend)
         ).astype(np.uint8)
 
         # 2) Detect major changes (red boxes)
-        # Convert images to grayscale (RGB part)
         gray1 = cv2.cvtColor(arr1[:, :, :3], cv2.COLOR_RGB2GRAY)
         gray2 = cv2.cvtColor(arr2[:, :, :3], cv2.COLOR_RGB2GRAY)
         diff = cv2.absdiff(gray1, gray2)
